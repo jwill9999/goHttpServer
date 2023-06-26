@@ -20,12 +20,13 @@ func getHello(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/", getRoot)
-	http.HandleFunc("/hello", getHello)
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", getRoot)
+	mux.HandleFunc("/hello", getHello)
 
 	// start the server
 	fmt.Printf("Starting server at port 8080\n")
-	err := http.ListenAndServe(":8080", nil)
+	err := http.ListenAndServe(":8080", mux)
 	if errors.Is(err, http.ErrServerClosed) {
 		fmt.Printf("Server closed\n")
 	} else if err != nil {
